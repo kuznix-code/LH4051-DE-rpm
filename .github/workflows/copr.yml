@@ -1,8 +1,12 @@
 name: COPR Release Build
 
 on:
-  release:
-    types: [published]
+  # Allow a manual COPR build from the Actions tab.
+  workflow_dispatch:
+
+  # The upstream LH4051-DE repository sends this event after publishing a release.
+  repository_dispatch:
+    types: [lh4051-de-release]
 
 jobs:
   trigger-copr:
