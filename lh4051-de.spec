@@ -8,12 +8,12 @@
 # Version while creating the SRPM, so the resulting SRPM has a concrete version.
 Name:           LH4051-DE
 Version:        %(curl -fsSL https://api.github.com/repos/kuznix-code/LH4051-DE/releases/latest | grep '"tag_name"' | head -n1 | cut -d '"' -f4 | sed 's/^v//')
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        GTK4 desktop shell inspired by Windows Longhorn Build 4051
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/kuznix-code/LH4051-DE
-Source0:        https://github.com/kuznix-code/LH4051-DE/archive/refs/tags/v%{version}.tar.gz
+Source0:        https://github.com/kuznix-code/LH4051-DE/archive/refs/heads/stable.tar.gz
 
 Requires:       %{name}-data = %{version}-%{release}
 
@@ -162,7 +162,7 @@ systems, where users manage installation and updates outside a package manager.
 %endif
 
 %prep
-%autosetup -n LH4051-DE-%{version}
+%autosetup -n LH4051-DE-stable
 
 %build
 %make_build LAYER_SHELL=auto
