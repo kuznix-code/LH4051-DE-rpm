@@ -1,6 +1,6 @@
 # COPR custom source method for LH4051-DE.
-# COPR invokes this file with: make -f .copr/Makefile srpm outdir=... spec=...
-# Also supports local use with: make -f .copr/Makefile all
+# COPR invokes: make -f .copr/Makefile srpm outdir=... spec=...
+# Local use: make -f .copr/Makefile all
 
 SHELL := /bin/bash
 
@@ -20,9 +20,9 @@ srpm:
 	@mkdir -p "$(outdir)" "$(sourcedir)" "$(topdir)/BUILD" "$(topdir)/BUILDROOT" "$(topdir)/RPMS" "$(topdir)/SPECS"
 	@version="$$(rpmspec -q --srpm --qf '%{VERSION}\n' "$(spec)" | head -n1)"; \
 	  test -n "$$version" || { echo "ERROR: could not determine spec version" >&2; exit 1; }; \
-	  archive="v$$\${version}.tar.gz"; \
-	  url="https://github.com/kuznix-code/LH4051-DE/archive/refs/tags/$$\${archive}"; \
-	  echo "Downloading LH4051-DE $$\${version} source archive"; \
-	  curl --fail --location --silent --show-error "$$\${url}" -o "$(sourcedir)/$$archive"; \
+	  archive="v$$version.tar.gz"; \
+	  url="https://github.com/kuznix-code/LH4051-DE/archive/refs/tags/$$archive"; \
+	  echo "Downloading LH4051-DE $$version source archive"; \
+	  curl --fail --location --silent --show-error "$$url" -o "$(sourcedir)/$$archive"; \
 	  echo "Building SRPM into $(outdir)"; \
 	  rpmbuild -bs --define "_topdir $(topdir)" --define "_sourcedir $(sourcedir)" --define "_srcrpmdir $(abspath $(outdir))" "$(spec)"
