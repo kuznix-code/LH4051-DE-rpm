@@ -1,0 +1,51 @@
+name: Build and submit RPM to COPR
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "lh4051-de.spec"
+      - "Makefile"
+      - ".github/workflows/copr.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  copr:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - name: Install packaging tools
+        run: |
+          dnf install -y git make curl rpm-build rpmdevtools copr-cli
+
+      - name: Check out packaging repository
+        uses: actions/checkout@v4
+
+      - name: Configure COPR credentials
+        env:
+          COPR_LOGIN: ${{ secrets.COPR_LOGIN }}
+          COPR_USERNAME: ${{ secrets.COPR_USERNAME }}
+          COPR_TOKEN: ${{ secrets.COPR_TOKEN }}
+        run: |
+          test -n "$COPR_LOGIN" || { echo "Missing COPR_LOGIN secret"; exit 1; }
+          test -n "$COPR_USERNAME" || { echo "Missing COPR_USERNAME secret"; exit 1; }
+          test -n "$COPR_TOKEN" || { echo "Missing COPR_TOKEN secret"; exit 1; }
+          mkdir -p "$HOME/.config"
+          umask 077
+          cat > "$HOME/.config/copr" <<EOF
+          [copr-cli]
+          login = $COPR_LOGIN
+          username = $COPR_USERNAME
+          token = $COPR_TOKEN
+          copr_url = https://copr.fedorainfracloud.org
+          EOF
+
+      - name: Build SRPM and submit to COPR
+        env:
+          COPR_PROJECT: ${{ vars.COPR_PROJECT }}
+        run: |
+          test -n "$COPR_PROJECT" || { echo "Set COPR_PROJECT repository variable to owner/project"; exit 1; }
+          make copr COPR_PROJECT="$COPR_PROJECT"
