@@ -93,7 +93,7 @@ X11 display-manager session entry for LH4051-DE configured to launch fluxbox.
 %package session-wayland
 Summary:        Wayland login session for LH4051-DE
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Recommends:     labwc
+Requires:       labwc
 
 %description session-wayland
 Wayland display-manager session entry for LH4051-DE. The session wrapper
