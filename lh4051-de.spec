@@ -38,6 +38,7 @@ Desktop application entry for launching LH4051-DE in windowed mode.
 %package session
 Summary:        X11 login session for LH4051-DE
 Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       openbox
 
 %description session
 X11 display-manager session entry and launcher integration for LH4051-DE.
