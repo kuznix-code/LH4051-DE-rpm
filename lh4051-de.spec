@@ -15,6 +15,8 @@ License:        GPL-3.0-or-later
 URL:            https://github.com/kuznix-code/LH4051-DE
 Source0:        https://github.com/kuznix-code/LH4051-DE/archive/refs/tags/v%{version}.tar.gz
 
+Requires:       %{name}-data = %{version}-%{release}
+
 BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  pkgconf-pkg-config
@@ -29,7 +31,6 @@ Explorer, and X11/Wayland session support.
 
 %package data
 Summary:        Application menu entry for LH4051-DE
-Requires:       %{name}%{?_isa} = %{version}-%{release}
 BuildArch:      noarch
 
 %description data
@@ -43,6 +44,51 @@ Requires:       openbox
 %description session
 X11 display-manager session entry and launcher integration for LH4051-DE.
 The session wrapper can start an available window manager.
+
+%package session-xfwm4
+Summary:        X11 login session for LH4051-DE with Xfwm4
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       xfwm4
+BuildArch:      noarch
+
+%description session-xfwm4
+X11 display-manager session entry for LH4051-DE configured to launch xfwm4.
+
+%package session-marco
+Summary:        X11 login session for LH4051-DE with Marco
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       marco
+BuildArch:      noarch
+
+%description session-marco
+X11 display-manager session entry for LH4051-DE configured to launch marco.
+
+%package session-metacity
+Summary:        X11 login session for LH4051-DE with Metacity
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       metacity
+BuildArch:      noarch
+
+%description session-metacity
+X11 display-manager session entry for LH4051-DE configured to launch metacity.
+
+%package session-icewm
+Summary:        X11 login session for LH4051-DE with Icewm
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       icewm
+BuildArch:      noarch
+
+%description session-icewm
+X11 display-manager session entry for LH4051-DE configured to launch icewm.
+
+%package session-fluxbox
+Summary:        X11 login session for LH4051-DE with Fluxbox
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       fluxbox
+BuildArch:      noarch
+
+%description session-fluxbox
+X11 display-manager session entry for LH4051-DE configured to launch fluxbox.
 
 %package session-wayland
 Summary:        Wayland login session for LH4051-DE
@@ -105,6 +151,21 @@ rm -f %{buildroot}%{_bindir}/lh4051-de-updater
 
 %files session
 %{_datadir}/xsessions/lh4051-de.desktop
+
+%files session-xfwm4
+%{_datadir}/xsessions/lh4051-de-xfwm4.desktop
+
+%files session-marco
+%{_datadir}/xsessions/lh4051-de-marco.desktop
+
+%files session-metacity
+%{_datadir}/xsessions/lh4051-de-metacity.desktop
+
+%files session-icewm
+%{_datadir}/xsessions/lh4051-de-icewm.desktop
+
+%files session-fluxbox
+%{_datadir}/xsessions/lh4051-de-fluxbox.desktop
 
 %files session-wayland
 %{_datadir}/wayland-sessions/lh4051-de.desktop
