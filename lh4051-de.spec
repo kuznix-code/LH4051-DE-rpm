@@ -99,6 +99,46 @@ Recommends:     labwc
 Wayland display-manager session entry for LH4051-DE. The session wrapper
 supports layer-shell compositors such as labwc and sway.
 
+%package session-wayland-sway
+Summary:        Wayland login session for LH4051-DE with Sway
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       sway
+BuildArch:      noarch
+
+%description session-wayland-sway
+Wayland display-manager session entry configured to launch LH4051-DE with Sway.
+
+%package sessions-x11-all
+Summary:        All LH4051-DE X11 sessions
+Requires:       %{name}-session = %{version}-%{release}
+Requires:       %{name}-session-xfwm4 = %{version}-%{release}
+Requires:       %{name}-session-marco = %{version}-%{release}
+Requires:       %{name}-session-metacity = %{version}-%{release}
+Requires:       %{name}-session-icewm = %{version}-%{release}
+Requires:       %{name}-session-fluxbox = %{version}-%{release}
+BuildArch:      noarch
+
+%description sessions-x11-all
+Meta-package installing every available LH4051-DE X11 session.
+
+%package sessions-wayland-all
+Summary:        All LH4051-DE Wayland sessions
+Requires:       %{name}-session-wayland = %{version}-%{release}
+Requires:       %{name}-session-wayland-sway = %{version}-%{release}
+BuildArch:      noarch
+
+%description sessions-wayland-all
+Meta-package installing every available LH4051-DE Wayland session.
+
+%package sessions-all
+Summary:        All LH4051-DE sessions
+Requires:       %{name}-sessions-x11-all = %{version}-%{release}
+Requires:       %{name}-sessions-wayland-all = %{version}-%{release}
+BuildArch:      noarch
+
+%description sessions-all
+Meta-package installing every available LH4051-DE X11 and Wayland session.
+
 %if %{with updater}
 %package updater
 Summary:        Optional self-updater for LH4051-DE
@@ -169,6 +209,15 @@ rm -f %{buildroot}%{_bindir}/lh4051-de-updater
 
 %files session-wayland
 %{_datadir}/wayland-sessions/lh4051-de.desktop
+
+%files session-wayland-sway
+%{_datadir}/wayland-sessions/lh4051-de-sway.desktop
+
+%files sessions-x11-all
+
+%files sessions-wayland-all
+
+%files sessions-all
 
 %if %{with updater}
 %files updater
