@@ -1,4 +1,9 @@
 # Dynamic latest-stable RPM spec for LH4051-DE.
+# Optional subpackages (disabled by default): build with --with updater and/or
+# --with bootstrap. These are intended mainly for Linux From Scratch and other
+# systems without a package manager; updater is also useful on Windows/macOS.
+%bcond_with updater
+%bcond_with bootstrap
 # The GitHub /releases/latest API excludes drafts and prereleases. RPM expands
 # Version while creating the SRPM, so the resulting SRPM has a concrete version.
 Name:           lh4051-de
@@ -47,6 +52,28 @@ Recommends:     labwc
 Wayland display-manager session entry for LH4051-DE. The session wrapper
 supports layer-shell compositors such as labwc and sway.
 
+%if %{with updater}
+%package updater
+Summary:        Optional self-updater for LH4051-DE
+Requires:       %{name} = %{version}-%{release}
+
+%description updater
+Self-updater for LH4051-DE. Intended primarily for Linux From Scratch and
+other systems without a package manager. On package-managed distributions,
+updates should normally be installed through the system package manager.
+
+%endif
+%if %{with bootstrap}
+%package bootstrap
+Summary:        Optional bootstrap installer for LH4051-DE
+Requires:       %{name} = %{version}-%{release}
+
+%description bootstrap
+Bootstrap installer for LH4051-DE. Intended primarily for Linux From Scratch
+systems, where users manage installation and updates outside a package manager.
+
+%endif
+
 %prep
 %autosetup -n LH4051-DE-%{version}
 
@@ -55,6 +82,12 @@ supports layer-shell compositors such as labwc and sway.
 
 %install
 %make_install PREFIX=%{_prefix}
+%if %{with updater}
+%make_install PREFIX=%{_prefix} install-updater
+%endif
+%if %{with bootstrap}
+%make_install PREFIX=%{_prefix} install-bootstrap
+%endif
 
 %files
 %license LICENSE
@@ -70,3 +103,13 @@ supports layer-shell compositors such as labwc and sway.
 
 %files session-wayland
 %{_datadir}/wayland-sessions/lh4051-de.desktop
+
+%if %{with updater}
+%files updater
+%{_bindir}/lh4051-de-updater
+%endif
+
+%if %{with bootstrap}
+%files bootstrap
+%{_bindir}/lh4051-de-bootstrap
+%endif
