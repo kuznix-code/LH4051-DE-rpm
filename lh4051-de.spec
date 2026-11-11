@@ -82,7 +82,11 @@ systems, where users manage installation and updates outside a package manager.
 
 %install
 %make_install PREFIX=%{_prefix}
-%if %{with updater}
+# The upstream default install target currently installs the updater too.
+# Keep it out of the default package set unless its optional subpackage is enabled.
+%if %{without updater}
+rm -f %{buildroot}%{_bindir}/lh4051-de-updater
+%else
 %make_install PREFIX=%{_prefix} install-updater
 %endif
 %if %{with bootstrap}
