@@ -8,7 +8,9 @@ RPM_TOPDIR ?= $(HOME)/rpmbuild
 SRPM_DIR := $(RPM_TOPDIR)/SRPMS
 COPR_PROJECT ?=
 
-.PHONY: help version sources srpm copr clean
+.PHONY: all help version sources srpm copr clean
+
+all: srpm
 
 help:
 	@printf '%s\n' \
